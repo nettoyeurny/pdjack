@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.nio.FloatBuffer;
 
 import org.puredata.core.PdBase;
+import org.puredata.core.PdReceiver;
 
 import com.noisepages.nettoyeur.jack.JackException;
 import com.noisepages.nettoyeur.jack.JackNativeClient;
@@ -101,6 +102,16 @@ public class PdJackProcessor {
 	
 	// Simple main routine, mostly to check whether everything loads and starts correctly.
 	public static void main(String[] args) throws JackException, InterruptedException, IOException {
+		PdBase.setReceiver(new PdReceiver() {
+			@Override public void receiveSymbol(String source, String symbol) {}
+			@Override public void receiveMessage(String source, String symbol, Object... args) {}
+			@Override public void receiveList(String source, Object... args) {}
+			@Override public void receiveFloat(String source, float x) {}
+			@Override public void receiveBang(String source) {}
+			@Override public void print(String s) {
+				System.out.println("pd says: " + s);
+			}
+		});
 		PdJackProcessor proc = createPdJackProcessor(1, 2);
 		int patchId = PdBase.openPatch(new File("data/test.pd"));
 		JackNativeClient jackClient = proc.createClient("pd-client");
