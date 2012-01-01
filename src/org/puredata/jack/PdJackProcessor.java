@@ -47,7 +47,7 @@ public class PdJackProcessor {
 		this.nOut = nOut;
 		this.inBuf = new float[nIn * PD_BLOCK_SIZE];
 		this.outBuf = new float[nOut * PD_BLOCK_SIZE];
-		PdBase.openAudio(nIn, nOut, JackNativeClient.getSampleRate(), 1);
+		PdBase.openAudio(nIn, nOut, JackNativeClient.getSampleRate());
 		PdBase.computeAudio(true);
 	}
 	
